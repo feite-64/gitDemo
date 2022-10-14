@@ -1,14 +1,32 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+// 自动引入相关import
+import AutoImport from 'unplugin-auto-import/vite'
+// 按需引入el
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    vueJsx(),
+    AutoImport({
+      imports: ['vue'],
+      dts: 'src/auto-import.d.ts',
+      resolvers: [ElementPlusResolver()]
+    }),
+    Components({ resolvers: [ElementPlusResolver()] })
+  ],
+  //绝对路径
   resolve: {
     alias: {
-      '/@/': path.resolve(__dirname, './src')
+      '@': path.resolve(__dirname, 'src')
     }
   },
+  //跨域
   server: {
     host: '127.0.0.1',
     port: 3000,

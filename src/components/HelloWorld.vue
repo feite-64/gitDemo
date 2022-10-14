@@ -1,13 +1,17 @@
 <template>
-  <div ref="main" :style="{ width: '100%', height: '100%' }">
-    11111111111111</div>
-
+  <div ref="main" :style="{ width: '100%', height: '100%' }" >
+  </div>
+  <div>
+    <!-- 注释 -->
+    11111111111111
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { Directive, DirectiveBinding, onMounted, ref } from 'vue';
 import { echarts } from '../../src/echarts/index'
 const main = ref<HTMLElement>()
+// const value = ref('red')
 onMounted(() => {
   const myChart = echarts.init(main.value!)
   // // 绘制图表
@@ -29,6 +33,9 @@ onMounted(() => {
     ]
   });
 })
+
+
+
 </script>
 
 <style scoped>
