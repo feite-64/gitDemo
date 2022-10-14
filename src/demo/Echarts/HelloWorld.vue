@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { Directive, DirectiveBinding, onMounted, ref } from 'vue';
-import { echarts } from '../../src/echarts/index'
+import { echarts } from '../../echarts/index'
 const main = ref<HTMLElement>()
 // const value = ref('red')
 onMounted(() => {

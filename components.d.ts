@@ -7,10 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Demo: typeof import('./src/components/demo.vue')['default']
+    ElA: typeof import('element-plus/es')['ElA']
     ElButton: typeof import('element-plus/es')['ElButton']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    ItemRecursion: typeof import('./src/components/ItemRecursion.vue')['default']
-    NavView: typeof import('./src/components/NavView.vue')['default']
+    ItemRecursion: typeof import('./src/components/ItemRec/ItemRecursion.vue')['default']
+    Loading: typeof import('./src/components/Loading/index.vue')['default']
+    MenuItem: typeof import('./src/components/ItemRecursion/MenuItem.vue')['default']
+    NavView: typeof import('./src/components/ItemRecursion/NavView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

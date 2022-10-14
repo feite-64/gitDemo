@@ -8,8 +8,10 @@
 import { ref, getCurrentInstance } from 'vue'
 const instance = getCurrentInstance()
 const money = ref<number>(98)
+//派发事件
 const emit = () => {
-  // instance?.proxy?.$Bus.emit('on-click', money.value += 2)
+  instance?.proxy?.$Bus.emit('on-click', money.value += 2)
+  instance?.proxy?.$Bus
 }
 </script>
 

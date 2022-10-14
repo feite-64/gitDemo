@@ -5,16 +5,27 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 
-const amount = ref<number>(0);
+const amount = ref();
 const instance = getCurrentInstance()
-// instance?.proxy?.$Bus.on('*', (res: number) => {
-//   amount.value = res;
-// })
-// instance?.proxy?.$Bus.on('on-click', (res: number) => {
-//   amount.value = res;
-// })
+const fn = (sum: unknown) => {
+  amount.value = sum;
+  console.log(sum);
+  // console.log(sum);
+}
+//on接受事件
+instance?.proxy?.$Bus.on('on-click', fn
+)
+const off = (value: string | number) => {
+  if (value >= 102) {
+    //满足条件  移除订阅
+    instance?.proxy?.$Bus.off('on-click', fn)
+  }
+}
+watchEffect(() => {
+  off(amount.value)
+})
 
 </script>
 
