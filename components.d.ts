@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     Demo: typeof import('./src/components/demo.vue')['default']
     ElA: typeof import('element-plus/es')['ElA']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElInput: typeof import('element-plus/es')['ElInput']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ItemRecursion: typeof import('./src/components/ItemRec/ItemRecursion.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']

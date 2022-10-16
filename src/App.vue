@@ -1,14 +1,16 @@
 <template>
 
   <div>
-    <demoVue></demoVue>
+    <!-- <unocss></unocss> -->
+    <!-- <TailWind></TailWind> -->
   </div>
 
 </template>
 
 <script setup lang='ts'>
-import demoVue from '@/components/demo.vue';
-
+// import unocss from '@/demo/unocss/index.vue';
+// import TailWind from '@/tailwindcss/index.vue'
+console.log(import.meta.env);
 
 </script>
 
