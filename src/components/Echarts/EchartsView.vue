@@ -1,16 +1,19 @@
 <template>
   <div ref="chartRef" style="width: 600px; height: 400px; background-color: antiquewhite">
   </div>
+  <div ref="graphRef" style="width: 600px; height: 600px;">
+  </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 //引入echarts
-import { echarts, EChartsCoreOption } from '@/echarts/index'
-
+import { echarts, EChartsOption } from '@/hooks/echarts'
+import axios from 'axios';
 const chartRef = ref<HTMLElement>();
+const graphRef = ref<HTMLElement>();
 const myChart = ref();
-let option: EChartsCoreOption;
-
+const graphChart = ref();
+let option: EChartsOption;
 // prettier-ignore
 const femaleData = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6],
 [170.0, 59.0], [159.1, 47.6], [166.0, 69.8], [176.2, 66.8], [160.2, 75.2],
@@ -65,7 +68,6 @@ const femaleData = [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], 
 [169.5, 67.3], [160.0, 75.5], [172.7, 68.2], [162.6, 61.4], [157.5, 76.8],
 [176.5, 71.8], [164.4, 55.5], [160.7, 48.6], [174.0, 66.4], [163.8, 67.3]
 ];
-
 // prettier-ignore
 const maleDeta = [[174.0, 65.6], [175.3, 71.8], [193.5, 80.7], [186.5, 72.6], [187.2, 78.8],
 [181.5, 74.8], [184.0, 86.4], [184.5, 78.4], [175.0, 62.0], [184.0, 81.6],
@@ -119,17 +121,18 @@ const maleDeta = [[174.0, 65.6], [175.3, 71.8], [193.5, 80.7], [186.5, 72.6], [1
 [180.3, 83.2], [180.3, 83.2]
 ];
 
-function calculateAverage(data: number[][], dim: number) {
-  let total = 0;
-  for (var i = 0; i < data.length; i++) {
-    total += data[i][dim];
-  }
-
-  return (total /= data.length);
-}
-onMounted(() => {
+//点散图
+const SactterEcharts = () => {
   myChart.value = echarts.init(chartRef.value!);
-  const barOption: echarts.EChartsCoreOption = {
+  function calculateAverage(data: number[][], dim: number) {
+    let total = 0;
+    for (var i = 0; i < data.length; i++) {
+      total += data[i][dim];
+    }
+
+    return (total /= data.length);
+  }
+  const barOption: EChartsOption = {
     xAxis: {
       type: 'category',
       data: ['Female', 'Male']
@@ -159,7 +162,7 @@ onMounted(() => {
       }
     ]
   };
-  const scatterOption: echarts.EChartsCoreOption = (option = {
+  const scatterOption: EChartsOption = (option = {
     xAxis: {
       scale: true
     },
@@ -202,6 +205,76 @@ onMounted(() => {
   }, 2000);
 
   option && myChart.value.setOption(option);
+}
+const graphECharts = () => {
+  graphChart.value = echarts.init(graphRef.value!);
+  interface GraphNode {
+    symbolSize: number;
+    label?: {
+      show?: boolean;
+    };
+  }
+  graphChart.value.showLoading();
+  axios.get('/api/data/asset/data/les-miserables.json').then(res => {
+    graphChart.value.hideLoading();
+    const graph = res.data
+    graph.nodes.forEach(function (node: GraphNode) {
+      node.label = {
+        show: node.symbolSize > 30
+      };
+    });
+
+    option = {
+      title: {
+        text: 'Les Miserables',
+        subtext: 'Circular layout',
+        top: 'bottom',
+        left: 'right'
+      },
+      tooltip: {},
+      legend: [
+        {
+          data: graph.categories.map(function (a: { name: string }) {
+            return a.name;
+          })
+        }
+      ],
+      animationDurationUpdate: 1500,
+      animationEasingUpdate: 'quinticInOut',
+      series: [
+        {
+          name: 'Les Miserables',
+          type: 'graph',
+          layout: 'circular',
+          circular: {
+            rotateLabel: true
+          },
+          data: graph.nodes,
+          links: graph.links,
+          categories: graph.categories,
+          roam: true,
+          label: {
+            position: 'right',
+            formatter: '{b}'
+          },
+          lineStyle: {
+            color: 'source',
+            curveness: 0.3
+          }
+        }
+      ]
+    };
+
+    graphChart.value.setOption(option);
+  })
+  option && graphChart.value.setOption(option);
+}
+
+onMounted(() => {
+  //点散图
+  SactterEcharts()
+  //世界人物图
+  graphECharts()
 })
 
 </script>

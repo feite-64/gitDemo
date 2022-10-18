@@ -1,5 +1,5 @@
 <template>
-  <div ref="main" :style="{ width: '100%', height: '100%' }" >
+  <div ref="main" :style="{ width: '100%', height: '100%' }">
   </div>
   <div>
     <!-- 注释 -->
@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { Directive, DirectiveBinding, onMounted, ref } from 'vue';
-import { echarts } from '../../echarts/index'
+import { onMounted, ref } from 'vue';
+import { echarts } from '@/hooks/echarts/echarts/echarts'
 const main = ref<HTMLElement>()
 // const value = ref('red')
 onMounted(() => {

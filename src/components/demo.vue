@@ -7,8 +7,8 @@
 
 <script setup lang='ts'>
 import { getCurrentInstance } from 'vue'
-import useBase64 from '@/hooks/index'
-
+// import useBase64 from '@/hooks/index'
+import { debounce } from 'lodash'
 const instance = getCurrentInstance()
 const num = ref<number>(10)
 const disabled = ref<boolean>(false)
@@ -21,13 +21,8 @@ const isShowClick = () => {
     // 不可选中
     disabled.value = true
   }
-  // await nextTick()
-
-  // for (let i = 0; i < 10; i++) {
-  //   current.value = i
-  // }
 }
-
+debounce(isShowClick, 1000)
 // 图片转base64
 // useBase64({ el: '#img' }).then(res => {
 //   console.log(res.baseUrl);
